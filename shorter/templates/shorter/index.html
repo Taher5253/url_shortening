@@ -1,0 +1,134 @@
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="height=device-height, initial-scale=1">
+    <title>URL Shortener</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/f27026538d.js" ></script>
+
+</head>
+<style>
+    body {
+        min-height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .asteriskField {
+        display: none;
+    }
+
+    textarea {
+        overflow-y: scroll;
+    }
+
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #007BFF;
+        border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #005AEE;
+        cursor: pointer !important;
+    }
+
+
+</style>
+
+<body>
+{% load crispy_forms_tags %}
+<div class="container-fluid mt-4 mb-4">
+    <div class="row justify-content-center">
+        <div class="col-sm-8 col-md-6 col-lg-4 col-xl-3">
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == 'info' %}
+                        <div class="alert alert-success">
+                            {{ message }}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-error">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+
+                {% endfor %}
+            {% endif %}
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-wrapper">
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <button class="btn btn-primary" type="submit">
+                                Create URL
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            {% if url %}
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h2>Your new URL </h2>
+                    </div>
+                    <div class="card-body">
+                        <a class='link' href="{{ url }}" target="_blank">Go to</a>
+                        <div style="width: 100%; display: flex;box-sizing: border-box;">
+                            <textarea
+                                    style="border-radius: 5px;box-sizing: border-box; max-height: 56px; margin-right: 5px; flex-grow: 2;border:none
+"
+                                    class="p-3 mb-2 bg-light text-dark" id="raw-url"
+                                    readonly
+
+                            >{{ url }}
+                            </textarea>
+                            <button onclick="copy()"
+                                    style='max-height: 56px;max-width: 56px; flex-grow: 1'
+                                    class="btn btn-primary"><i
+                                    class="far fa-copy"></i>
+                            </button>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    function copy() {
+        var copyText = document.getElementById("raw-url");
+        var textArea = document.createElement("textarea");
+        textArea.value = copyText.textContent;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("Copy");
+        textArea.remove();
+    }
+</script>
+</body>
+</html>
