@@ -1,0 +1,4 @@
+--- Used django crispy forms to create to the form for url shortening
+--- Imported get_random_string library from django.utils.crypto to generate token
+--- Docker library to build and run the application
+--- Django Testcase library to test the application using unit test cases
